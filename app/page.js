@@ -1,8 +1,13 @@
-import { registry, gifts } from "@/data/wedding";
+import { getSiteData } from "@/lib/store";
+import { seedData } from "@/data/wedding";
 import { formatCurrency } from "@/lib/formatCurrency";
 import GiftList from "@/components/GiftList";
 
-export default function WeddingPage() {
+export const dynamic = "force-dynamic";
+
+export default async function WeddingPage() {
+  const { registry, gifts } = (await getSiteData()) ?? seedData;
+
   const totalGoal = gifts.reduce((sum, g) => sum + g.price, 0);
   const totalRaised = gifts.reduce((sum, g) => sum + (g.raised ?? 0), 0);
   const totalPct = totalGoal > 0 ? Math.min(100, Math.round((totalRaised / totalGoal) * 100)) : 0;
@@ -27,24 +32,32 @@ export default function WeddingPage() {
       </div>
 
       {/* Overall progress */}
-      <div className="max-w-xl mx-auto mb-16 pb-16 border-b border-[#e6ddd3]">
-        <div className="h-1 bg-[#e6ddd3] rounded-full overflow-hidden">
-          <div
-            className="h-full bg-[#a9705f] transition-all duration-500"
-            style={{ width: `${totalPct}%` }}
-          />
+      {gifts.length > 0 && (
+        <div className="max-w-xl mx-auto mb-16 pb-16 border-b border-[#e6ddd3]">
+          <div className="h-1 bg-[#e6ddd3] rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[#a9705f] transition-all duration-500"
+              style={{ width: `${totalPct}%` }}
+            />
+          </div>
+          <div className="flex items-baseline justify-between mt-2">
+            <p className="text-xs font-light text-[#6b5f53]">
+              {formatCurrency(totalRaised, registry.currency)} raised of{" "}
+              {formatCurrency(totalGoal, registry.currency)}
+            </p>
+            <p className="text-xs font-light text-[#a99a89]">{totalPct}%</p>
+          </div>
         </div>
-        <div className="flex items-baseline justify-between mt-2">
-          <p className="text-xs font-light text-[#6b5f53]">
-            {formatCurrency(totalRaised, registry.currency)} raised of{" "}
-            {formatCurrency(totalGoal, registry.currency)}
-          </p>
-          <p className="text-xs font-light text-[#a99a89]">{totalPct}%</p>
-        </div>
-      </div>
+      )}
 
       {/* Gift list */}
-      <GiftList gifts={gifts} bank={registry.bank} currency={registry.currency} />
+      {gifts.length === 0 ? (
+        <p className="text-sm font-light text-[#a99a89] py-24 text-center tracking-wide">
+          The gift list is being put together — check back soon.
+        </p>
+      ) : (
+        <GiftList gifts={gifts} bank={registry.bank} currency={registry.currency} />
+      )}
 
       {/* General bank details */}
       <section className="mt-24 pb-8 pt-12 border-t border-[#e6ddd3] max-w-xl mx-auto">
