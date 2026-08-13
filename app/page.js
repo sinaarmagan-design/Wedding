@@ -16,17 +16,17 @@ export default async function WeddingPage() {
     <div className="max-w-6xl mx-auto px-6 py-20">
       {/* Intro */}
       <div className="max-w-xl mx-auto text-center mb-16">
-        <p className="text-xs font-light tracking-[0.2em] uppercase text-[#a9705f] mb-4">
+        <p className="text-sm font-semibold tracking-[0.15em] uppercase text-[#a9705f] mb-4">
           {new Date(registry.weddingDate).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
           })}
         </p>
-        <h1 className="font-cormorant text-5xl font-medium text-[#2b2420] tracking-tight mb-6">
+        <h1 className="font-cormorant text-5xl sm:text-6xl font-semibold text-[#2b2420] tracking-tight mb-6">
           {registry.coupleNames}
         </h1>
-        <p className="font-jost text-sm font-light text-[#6b5f53] leading-7">
+        <p className="font-jost text-base sm:text-lg font-medium text-[#4a4038] leading-8">
           {registry.message}
         </p>
       </div>
