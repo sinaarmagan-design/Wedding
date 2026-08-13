@@ -20,9 +20,10 @@ export async function PUT(request) {
 
   try {
     await saveSiteData(data);
-  } catch {
+  } catch (err) {
+    console.error("saveSiteData failed:", err);
     return NextResponse.json(
-      { error: "Couldn't save — Blob storage isn't connected to this project yet." },
+      { error: `Couldn't save — ${err?.message || "unknown error"}` },
       { status: 500 }
     );
   }

@@ -22,9 +22,10 @@ export async function POST(request) {
       access: "public",
     });
     return NextResponse.json({ url: blob.url });
-  } catch {
+  } catch (err) {
+    console.error("upload failed:", err);
     return NextResponse.json(
-      { error: "Couldn't upload — Blob storage isn't connected to this project yet." },
+      { error: `Couldn't upload — ${err?.message || "unknown error"}` },
       { status: 500 }
     );
   }
