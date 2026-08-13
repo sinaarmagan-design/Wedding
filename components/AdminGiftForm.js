@@ -8,7 +8,7 @@ const emptyGift = {
   category: "",
   price: "",
   raised: "",
-  imageUrl: "",
+  imagePath: "",
   purchaseLink: "",
 };
 
@@ -39,7 +39,7 @@ export default function AdminGiftForm({ gift, password, onSave, onCancel }) {
         throw new Error(data.error || "Upload failed");
       }
       const data = await res.json();
-      update("imageUrl", data.url);
+      update("imagePath", data.path);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -133,10 +133,10 @@ export default function AdminGiftForm({ gift, password, onSave, onCancel }) {
         <input type="file" accept="image/*" onChange={handleImagePick} className="text-xs" />
       </label>
       {uploading && <p className="text-xs text-[#a9705f]">Uploading…</p>}
-      {form.imageUrl && (
+      {form.imagePath && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={form.imageUrl}
+          src={`/api/image/${form.imagePath}`}
           alt="Preview"
           className="w-24 h-24 object-cover rounded-lg border border-[#e6ddd3]"
         />

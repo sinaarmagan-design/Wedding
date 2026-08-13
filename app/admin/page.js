@@ -269,10 +269,10 @@ export default function AdminPage() {
               key={gift.id}
               className="flex items-center gap-4 border border-[#e6ddd3] rounded-xl p-4 bg-white/60"
             >
-              {gift.imageUrl ? (
+              {gift.imagePath ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={gift.imageUrl}
+                  src={`/api/image/${gift.imagePath}`}
                   alt={gift.title}
                   className="w-16 h-16 object-cover rounded-lg shrink-0"
                 />

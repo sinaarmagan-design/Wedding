@@ -25,10 +25,10 @@ export default function GiftCard({ gift, bank, currency }) {
     <div className="border border-[#e6ddd3] rounded-xl overflow-hidden bg-white/60">
       {/* Image / placeholder */}
       <div className="relative aspect-[4/3] bg-[#f1e9df] flex items-center justify-center">
-        {gift.imageUrl ? (
+        {gift.imagePath ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={gift.imageUrl}
+            src={`/api/image/${gift.imagePath}`}
             alt={gift.title}
             className="w-full h-full object-cover"
           />
