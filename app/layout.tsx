@@ -17,8 +17,8 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "Our Wedding Gift List",
-  description: "Browse our wedding gift list — buy a gift outright, or contribute towards one.",
+  title: "Armağan & Eylül",
+  description: "Armağan & Eylül's wedding gift list — buy a gift outright, or contribute towards one.",
 };
 
 export default function RootLayout({

@@ -18,7 +18,7 @@ export default function GiftList({ gifts, bank, currency }) {
             <button
               key={cat}
               onClick={() => setActive(cat)}
-              className={`text-[10px] font-light tracking-[0.15em] uppercase px-3 py-1.5 border transition-colors duration-200 rounded-full ${
+              className={`text-[10px] md:text-xs font-light tracking-[0.15em] uppercase px-3 py-1.5 border transition-colors duration-200 rounded-full ${
                 active === cat
                   ? "border-[#2b2420] text-[#2b2420]"
                   : "border-[#d9cbba] text-[#a99a89] hover:text-[#6b5f53] hover:border-[#a99a89]"

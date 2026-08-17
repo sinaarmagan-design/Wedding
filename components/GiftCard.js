@@ -2,14 +2,19 @@
 
 import { useState } from "react";
 import { formatCurrency } from "@/lib/formatCurrency";
+import { suggestedAmountsForRemaining } from "@/lib/suggestedAmounts";
+import AmountPicker from "./AmountPicker";
 
 export default function GiftCard({ gift, bank, currency }) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [amount, setAmount] = useState("");
 
   const raised = gift.raised ?? 0;
   const pct = Math.min(100, Math.round((raised / gift.price) * 100));
   const funded = raised >= gift.price;
+  const suggested = suggestedAmountsForRemaining(gift.price - raised);
+  const reference = amount ? `${gift.title} — ${formatCurrency(Number(amount), currency)}` : gift.title;
 
   async function copyIban() {
     try {
@@ -38,7 +43,7 @@ export default function GiftCard({ gift, bank, currency }) {
           </p>
         )}
         {funded && (
-          <span className="absolute top-3 right-3 text-[9px] font-light tracking-[0.15em] uppercase bg-[#2b2420] text-[#faf6f1] px-2.5 py-1 rounded-full">
+          <span className="absolute top-3 right-3 text-[9px] md:text-[10px] font-light tracking-[0.15em] uppercase bg-[#2b2420] text-[#faf6f1] px-2.5 py-1 rounded-full">
             Fully gifted
           </span>
         )}
@@ -46,13 +51,13 @@ export default function GiftCard({ gift, bank, currency }) {
 
       <div className="p-5">
         {gift.category && (
-          <p className="text-[9px] font-light text-[#a9705f] tracking-[0.2em] uppercase mb-1">
+          <p className="text-[9px] md:text-[10px] font-light text-[#a9705f] tracking-[0.2em] uppercase mb-1">
             {gift.category}
           </p>
         )}
-        <h3 className="font-cormorant text-xl text-[#2b2420] mb-1">{gift.title}</h3>
+        <h3 className="font-cormorant text-xl md:text-2xl text-[#2b2420] mb-1">{gift.title}</h3>
         {gift.description && (
-          <p className="text-xs font-light text-[#6b5f53] leading-5 mb-4">
+          <p className="text-xs md:text-sm font-light text-[#6b5f53] leading-5 md:leading-6 mb-4">
             {gift.description}
           </p>
         )}
@@ -66,10 +71,10 @@ export default function GiftCard({ gift, bank, currency }) {
             />
           </div>
           <div className="flex items-baseline justify-between mt-2">
-            <p className="text-[11px] font-light text-[#6b5f53]">
+            <p className="text-[11px] md:text-xs font-light text-[#6b5f53]">
               {formatCurrency(raised, currency)} of {formatCurrency(gift.price, currency)}
             </p>
-            <p className="text-[11px] font-light text-[#a99a89]">{pct}%</p>
+            <p className="text-[11px] md:text-xs font-light text-[#a99a89]">{pct}%</p>
           </div>
         </div>
 
@@ -80,14 +85,14 @@ export default function GiftCard({ gift, bank, currency }) {
               href={gift.purchaseLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 text-center text-[10px] font-light tracking-[0.15em] uppercase border border-[#2b2420] text-[#2b2420] hover:bg-[#2b2420] hover:text-[#faf6f1] transition-colors duration-200 rounded-full px-4 py-2.5"
+              className="flex-1 text-center text-[10px] md:text-xs font-light tracking-[0.15em] uppercase border border-[#2b2420] text-[#2b2420] hover:bg-[#2b2420] hover:text-[#faf6f1] transition-colors duration-200 rounded-full px-4 py-2.5"
             >
               Buy this gift
             </a>
           )}
           <button
             onClick={() => setOpen((o) => !o)}
-            className={`flex-1 text-center text-[10px] font-light tracking-[0.15em] uppercase border transition-colors duration-200 rounded-full px-4 py-2.5 ${
+            className={`flex-1 text-center text-[10px] md:text-xs font-light tracking-[0.15em] uppercase border transition-colors duration-200 rounded-full px-4 py-2.5 ${
               open
                 ? "border-[#a9705f] bg-[#a9705f] text-white"
                 : "border-[#d9cbba] text-[#6b5f53] hover:border-[#a9705f] hover:text-[#a9705f]"
@@ -99,46 +104,56 @@ export default function GiftCard({ gift, bank, currency }) {
 
         {/* Contribute info panel */}
         {open && (
-          <div className="mt-4 pt-4 border-t border-[#e6ddd3] text-xs font-light text-[#6b5f53] leading-6">
+          <div className="mt-4 pt-4 border-t border-[#e6ddd3] text-xs md:text-sm font-light text-[#6b5f53] leading-6">
             <p className="mb-3">
               Send any amount by bank transfer — every contribution goes towards this
               gift.
             </p>
+
+            {suggested.length > 0 && (
+              <AmountPicker
+                amounts={suggested}
+                value={amount}
+                onChange={setAmount}
+                currency={currency}
+              />
+            )}
+
             <dl className="space-y-1 mb-3">
               <div className="flex justify-between gap-3">
-                <dt className="text-[#a99a89] uppercase tracking-[0.1em] text-[9px] mt-0.5">
+                <dt className="text-[#a99a89] uppercase tracking-[0.1em] text-[9px] md:text-[10px] mt-0.5">
                   Account
                 </dt>
                 <dd className="text-right">{bank.accountName}</dd>
               </div>
               <div className="flex justify-between gap-3 items-center">
-                <dt className="text-[#a99a89] uppercase tracking-[0.1em] text-[9px]">
+                <dt className="text-[#a99a89] uppercase tracking-[0.1em] text-[9px] md:text-[10px]">
                   IBAN
                 </dt>
                 <dd className="text-right font-mono tracking-wide">{bank.iban}</dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-[#a99a89] uppercase tracking-[0.1em] text-[9px] mt-0.5">
+                <dt className="text-[#a99a89] uppercase tracking-[0.1em] text-[9px] md:text-[10px] mt-0.5">
                   BIC
                 </dt>
                 <dd className="text-right font-mono">{bank.bic}</dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-[#a99a89] uppercase tracking-[0.1em] text-[9px] mt-0.5">
+                <dt className="text-[#a99a89] uppercase tracking-[0.1em] text-[9px] md:text-[10px] mt-0.5">
                   Bank
                 </dt>
                 <dd className="text-right">{bank.bankName}</dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-[#a99a89] uppercase tracking-[0.1em] text-[9px] mt-0.5">
+                <dt className="text-[#a99a89] uppercase tracking-[0.1em] text-[9px] md:text-[10px] mt-0.5">
                   Reference
                 </dt>
-                <dd className="text-right">{gift.title}</dd>
+                <dd className="text-right">{reference}</dd>
               </div>
             </dl>
             <button
               onClick={copyIban}
-              className="text-[10px] font-light tracking-[0.15em] uppercase text-[#2b2420] underline underline-offset-4 decoration-[#d9cbba] hover:decoration-[#2b2420] transition-colors duration-200"
+              className="text-[10px] md:text-xs font-light tracking-[0.15em] uppercase text-[#2b2420] underline underline-offset-4 decoration-[#d9cbba] hover:decoration-[#2b2420] transition-colors duration-200"
             >
               {copied ? "Copied" : "Copy IBAN"}
             </button>
