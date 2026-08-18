@@ -3,6 +3,7 @@ import { seedData } from "@/data/wedding";
 import { formatCurrency } from "@/lib/formatCurrency";
 import GiftList from "@/components/GiftList";
 import GeneralGiftSection from "@/components/GeneralGiftSection";
+import ShippingAddressSection from "@/components/ShippingAddressSection";
 
 export const dynamic = "force-dynamic";
 
@@ -59,6 +60,9 @@ export default async function WeddingPage() {
       ) : (
         <GiftList gifts={gifts} bank={registry.bank} currency={registry.currency} />
       )}
+
+      {/* Shipping address for direct purchases */}
+      <ShippingAddressSection address={registry.shippingAddress} />
 
       {/* General bank details */}
       <GeneralGiftSection bank={registry.bank} currency={registry.currency} />

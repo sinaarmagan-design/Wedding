@@ -179,6 +179,15 @@ export default function AdminPage() {
             rows={3}
           />
         </label>
+        <label className="text-xs font-light text-[#6b5f53] flex flex-col gap-1.5">
+          Shipping address (for guests buying a gift directly)
+          <textarea
+            value={registry.shippingAddress || ""}
+            onChange={(e) => updateRegistry("shippingAddress", e.target.value)}
+            className="border border-[#d9cbba] rounded-lg px-3 py-2 text-sm bg-white"
+            rows={2}
+          />
+        </label>
       </section>
 
       {/* Bank */}

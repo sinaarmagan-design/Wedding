@@ -9,6 +9,7 @@ export const seedData = {
     message:
       "Your presence at our wedding is the only gift we need. If you'd like to help us start our life together, we've put a few things on this list — buy one outright, or contribute any amount towards it.",
     currency: "EUR",
+    shippingAddress: "İstanbul Beşiktaş Akat Mah. Akay Sokak Özlem Sitesi Blok: 1D Daire: 9 Kat:4",
     bank: {
       accountName: "TODO — account holder name",
       iban: "TODO — IBAN",
